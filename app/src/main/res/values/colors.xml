@@ -7,8 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="fade_black">#394142</color>
-    <color name="toolbar_color">#242627</color>
+    <color name="fade_black">#343434</color>
+    <color name="toolbar_color">#1B1B1B</color>
     <color name="dark_white">#FFEFEF</color>
+    <color name="smoky_black">#100C08</color>
+    <color name="dim_gray">#6A6A6A</color>
+    <color name="lite_gray"> #C0C0C0</color>
 
 </resources>

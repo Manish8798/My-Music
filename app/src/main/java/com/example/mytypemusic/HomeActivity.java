@@ -11,7 +11,6 @@ import android.provider.OpenableColumns;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -98,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
                 .child("Songs")
                 .child(uri.getLastPathSegment());
 
-        binding.progressSeekBar.setVisibility(View.VISIBLE);
+//        binding.progressSeekBar.setVisibility(View.VISIBLE);
 
         storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
 
@@ -112,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
 
         }).addOnFailureListener(e -> {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            binding.progressSeekBar.setVisibility(View.GONE);
+//            binding.progressSeekBar.setVisibility(View.GONE);
 
         }).addOnProgressListener(snapshot -> {
             double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();

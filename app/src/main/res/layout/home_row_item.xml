@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="2dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:scrollbars="vertical"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lite_gray">
+
+        <TextView
+            android:id="@+id/SongName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8sp"
+            android:layout_marginEnd="8sp"
+            android:fontFamily="sans-serif"
+            android:padding="8dp"
+            android:text="Sample Text"
+            android:textColor="@color/smoky_black"
+            android:textSize="16sp"
+            android:textStyle="normal">
+
+        </TextView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</com.google.android.material.card.MaterialCardView>
