@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/smoky_black"
+    android:background="@android:color/transparent"
     tools:context=".HomeActivity">
 
     <ProgressBar
@@ -33,7 +33,7 @@
         app:fabCradleMargin="8dp"
         app:fabCradleRoundedCornerRadius="16dp"
         app:fabCradleVerticalOffset="8dp"
-        android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+        android:theme="@style/HomeAppTheme">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"

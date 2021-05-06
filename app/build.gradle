@@ -54,6 +54,7 @@ dependencies {
 
     // Dependency FirebaseUI for Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:6.2.1'
+    implementation 'com.github.jeancsanchez:JcPlayer:2.7.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
