@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.mytypemusic.R;
 import com.example.mytypemusic.databinding.FragmentFavoritesBinding;
 
 public class FavoritesFragment extends Fragment {
@@ -19,6 +20,9 @@ public class FavoritesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentFavoritesBinding.inflate(inflater, container, false);
+        if (binding.getRoot().findViewById(R.id.progressSeekBar) != null) {
+            binding.getRoot().findViewById(R.id.progressSeekBar).setVisibility(View.GONE);
+        }
         return binding.getRoot();
     }
 

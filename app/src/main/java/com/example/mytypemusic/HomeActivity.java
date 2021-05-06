@@ -11,6 +11,7 @@ import android.provider.OpenableColumns;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -55,6 +56,7 @@ public class HomeActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbar_color)));
         binding.bottomNav.setBackground(null);
         binding.bottomNav.getMenu().getItem(1).setEnabled(false);
+        binding.progressSeekBar.setVisibility(View.VISIBLE);
 
         binding.fab.setOnClickListener(v -> {
             if (validatePermission()) {
@@ -80,6 +82,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == RC_UPLOAD && resultCode == RESULT_OK) {
+            assert data != null;
             uri = data.getData();
             Cursor cursor = getApplicationContext().getContentResolver().query(uri, null, null, null, null);
             int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
@@ -106,10 +109,12 @@ public class HomeActivity extends AppCompatActivity {
             Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
             while (!uriTask.isComplete()) ;
             Uri urlSong = uriTask.getResult();
+            assert urlSong != null;
             songUrl = urlSong.toString();
             uploadDetailsToFirebase();
 
         }).addOnFailureListener(e -> {
+            binding.progressSeekBar.setProgress(0);
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
 //            binding.progressSeekBar.setVisibility(View.GONE);
 

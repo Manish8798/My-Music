@@ -2,7 +2,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/smoky_black"
@@ -15,9 +14,16 @@
         android:layout_height="12sp"
         android:layout_gravity="top"
         android:background="@color/smoky_black"
-        android:visibility="visible">
+        android:visibility="gone">
 
     </ProgressBar>
+
+    <FrameLayout
+        android:id="@+id/home_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
@@ -26,7 +32,8 @@
         android:layout_gravity="bottom"
         app:fabCradleMargin="8dp"
         app:fabCradleRoundedCornerRadius="16dp"
-        app:fabCradleVerticalOffset="8dp">
+        app:fabCradleVerticalOffset="8dp"
+        android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
