@@ -11,6 +11,10 @@ android {
         viewBinding true
     }
 
+    aaptOptions {
+        noCompress 'flac', '.mp3'
+    }
+
     defaultConfig {
         applicationId "com.example.mytypemusic"
         minSdkVersion 21
@@ -54,7 +58,6 @@ dependencies {
 
     // Dependency FirebaseUI for Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:6.2.1'
-    implementation 'com.github.jeancsanchez:JcPlayer:2.7.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

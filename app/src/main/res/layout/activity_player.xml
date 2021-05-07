@@ -4,8 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/smoky_black"
     tools:context=".PlayerActivity">
+
+    <ImageView
+        android:id="@+id/playBtn"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/song_name"
+        android:text="song name"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAllCaps="false"
+        android:textStyle="normal"
+        android:textColor="@color/dark_white"
+        app:layout_constraintTop_toBottomOf="@+id/guideline4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </TextView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
