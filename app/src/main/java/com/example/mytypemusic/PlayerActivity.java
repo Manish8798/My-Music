@@ -19,7 +19,7 @@ public class PlayerActivity extends AppCompatActivity {
     private int songPos;
     private ActivityPlayerBinding binding;
     private MediaPlayer mediaPlayer;
-    private boolean checkState = false;
+    private boolean playingAudio = false;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -49,30 +49,32 @@ public class PlayerActivity extends AppCompatActivity {
                         .build()
         );
 
-        handler.post(() -> {
-            try {
-                mediaPlayer.setDataSource(songUrl);
-                mediaPlayer.prepare();
-                mediaPlayer.start();
-                binding.playBtn.setBackground(getDrawable(R.drawable.ic_pause));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            mediaPlayer.setDataSource(songUrl);
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mediaPlayer.setOnPreparedListener(mp -> {
+            binding.playBtn.setBackground(getDrawable(R.drawable.ic_pause));
+            mediaPlayer.start();
+            playingAudio = true;
         });
 
         binding.playBtn.setOnClickListener(v -> {
 
-            if (!mediaPlayer.isPlaying() && mediaPlayer.getDuration() == mediaPlayer.getCurrentPosition()) {
-                binding.playBtn.setBackground(getDrawable(R.drawable.ic_pause));
-                mediaPlayer.start();
-                checkState = false;
-            }
-            if (!checkState && mediaPlayer.isPlaying()) {
-                checkState = true;
+            if (playingAudio) {
                 mediaPlayer.pause();
+                playingAudio = false;
                 binding.playBtn.setBackground(getDrawable(R.drawable.ic_play_button));
             } else {
-                checkState = false;
+                mediaPlayer.start();
+                playingAudio = true;
+                binding.playBtn.setBackground(getDrawable(R.drawable.ic_pause));
+            }
+            if (!playingAudio && mediaPlayer.getCurrentPosition() == mediaPlayer.getDuration()) {
+                playingAudio = true;
                 mediaPlayer.start();
                 binding.playBtn.setBackground(getDrawable(R.drawable.ic_pause));
             }
