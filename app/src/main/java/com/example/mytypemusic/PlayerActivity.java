@@ -79,11 +79,6 @@ public class PlayerActivity extends AppCompatActivity {
 
         });
 
-        if (!mediaPlayer.isPlaying()) {
-            binding.playBtn.setBackground(getDrawable(R.drawable.ic_play_button));
-            checkState = false;
-        }
-
     }
 
     @Override
