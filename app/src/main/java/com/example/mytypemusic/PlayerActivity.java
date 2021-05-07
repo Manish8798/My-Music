@@ -53,28 +53,36 @@ public class PlayerActivity extends AppCompatActivity {
             try {
                 mediaPlayer.setDataSource(songUrl);
                 mediaPlayer.prepare();
+                mediaPlayer.start();
                 binding.playBtn.setBackground(getDrawable(R.drawable.ic_pause));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            mediaPlayer.start();
         });
 
         binding.playBtn.setOnClickListener(v -> {
 
+            if (!mediaPlayer.isPlaying() && mediaPlayer.getDuration() == mediaPlayer.getCurrentPosition()) {
+                binding.playBtn.setBackground(getDrawable(R.drawable.ic_pause));
+                mediaPlayer.start();
+                checkState = false;
+            }
             if (!checkState && mediaPlayer.isPlaying()) {
                 checkState = true;
                 mediaPlayer.pause();
-                binding.playBtn.setBackground(null);
                 binding.playBtn.setBackground(getDrawable(R.drawable.ic_play_button));
             } else {
                 checkState = false;
                 mediaPlayer.start();
-                binding.playBtn.setBackground(null);
                 binding.playBtn.setBackground(getDrawable(R.drawable.ic_pause));
             }
 
         });
+
+        if (!mediaPlayer.isPlaying()) {
+            binding.playBtn.setBackground(getDrawable(R.drawable.ic_play_button));
+            checkState = false;
+        }
 
     }
 
@@ -84,11 +92,16 @@ public class PlayerActivity extends AppCompatActivity {
         return true;
     }
 
+    private void clearMediaPlayer() {
+        mediaPlayer.stop();
+        mediaPlayer.release();
+        mediaPlayer = null;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mediaPlayer != null)
-            mediaPlayer.release();
+        clearMediaPlayer();
     }
 
     /*

@@ -11,27 +11,56 @@
         android:id="@+id/playBtn"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
     </ImageView>
 
     <TextView
         android:id="@+id/song_name"
-        android:text="song name"
-        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16sp"
+        android:layout_marginEnd="16sp"
         android:gravity="center"
         android:maxLines="1"
+        android:text="song name"
         android:textAllCaps="false"
-        android:textStyle="normal"
         android:textColor="@color/dark_white"
-        app:layout_constraintTop_toBottomOf="@+id/guideline4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintTop_toBottomOf="@+id/guideline4">
 
     </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/song_name">
+
+        <SeekBar
+            android:id="@+id/seekbar_player"
+            android:layout_width="match_parent"
+            android:layout_height="32dp">
+
+        </SeekBar>
+
+        <TextView
+            android:id="@+id/seekBarHint"
+            android:textSize="12sp"
+            android:text="time"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+    </LinearLayout>
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -39,6 +68,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.30" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.60" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
