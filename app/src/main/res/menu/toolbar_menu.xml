@@ -2,9 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/user_profile"
+        android:title="User Profile"
+        app:showAsAction="never"/>
+
     <item android:id="@+id/log_out"
         android:title="Log out"
-        android:icon="@drawable/ic_logout"
         app:showAsAction="never">
     </item>
 

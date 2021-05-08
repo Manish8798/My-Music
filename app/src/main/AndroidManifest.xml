@@ -13,10 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyMusic">
-        <activity android:name=".PlayerActivity"></activity>
+        <activity android:name=".PlayerActivity"/>
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/HomeAppTheme" />
+            android:theme="@style/HomeAppTheme"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/LaunchTheme">
@@ -29,6 +30,9 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/HomeAppTheme" />
+
+        <activity android:name=".ProfileActivity"/>
+
     </application>
 
 </manifest>

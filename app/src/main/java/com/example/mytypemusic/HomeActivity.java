@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.mytypemusic.databinding.ActivityHomeBinding;
 import com.example.mytypemusic.fragments.FavoritesFragment;
@@ -51,12 +52,18 @@ public class HomeActivity extends AppCompatActivity {
     private Uri uri;
     private String songName, songUrl;
     private FirebaseUser user;
+    final Fragment homeFragment = new HomeFragment();
+    final Fragment favFragment = new FavoritesFragment();
+    final FragmentManager fm = getSupportFragmentManager();
+    Fragment activeFragment = homeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        fm.beginTransaction().add(R.id.home_container, favFragment, "2").hide(favFragment).commit();
+        fm.beginTransaction().add(R.id.home_container, homeFragment, "1").commit();
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbar_color)));
         binding.bottomNav.setBackground(null);
         binding.bottomNav.getMenu().getItem(1).setEnabled(false);
@@ -68,7 +75,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         binding.bottomNav.setOnNavigationItemSelectedListener(navListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.home_container, new HomeFragment()).commit();
 
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (signInAccount != null) {
@@ -147,19 +153,18 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
-        Fragment selectedFragment = null;
         switch (item.getItemId()) {
             case R.id.home:
-                selectedFragment = new HomeFragment();
-                break;
+                fm.beginTransaction().hide(activeFragment).show(homeFragment).commit();
+                activeFragment = homeFragment;
+                return true;
 
             case R.id.favorite:
-                selectedFragment = new FavoritesFragment();
-                break;
+                fm.beginTransaction().hide(activeFragment).show(favFragment).commit();
+                activeFragment = favFragment;
+                return true;
         }
-        assert selectedFragment != null;
-        getSupportFragmentManager().beginTransaction().replace(R.id.home_container, selectedFragment).commit();
-        return true;
+        return false;
     };
 
     @Override
@@ -179,6 +184,11 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
+                return true;
+
+            case R.id.user_profile:
+                Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(profileIntent);
                 return true;
 
             default:
