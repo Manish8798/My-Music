@@ -14,6 +14,8 @@ import com.example.mytypemusic.adapters.HomeAdapter;
 import com.example.mytypemusic.databinding.FragmentHomeBinding;
 import com.example.mytypemusic.model.SongDetails;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -27,7 +29,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        databaseReference = FirebaseDatabase.getInstance().getReference("Songs");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        assert user != null;
+        databaseReference = FirebaseDatabase.getInstance().getReference("Songs/" + user.getUid());
         binding.recyclerViewHome.setLayoutManager(new LinearLayoutManager(getContext()));
         FirebaseRecyclerOptions<SongDetails> options = new FirebaseRecyclerOptions.Builder<SongDetails>()
                 .setQuery(databaseReference, SongDetails.class)
@@ -35,7 +39,6 @@ public class HomeFragment extends Fragment {
 
         homeAdapter = new HomeAdapter(options);
         binding.recyclerViewHome.setAdapter(homeAdapter);
-
         return binding.getRoot();
     }
 

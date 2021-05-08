@@ -29,6 +29,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -49,6 +50,7 @@ public class HomeActivity extends AppCompatActivity {
     private boolean checkPermission = false;
     private Uri uri;
     private String songName, songUrl;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,12 @@ public class HomeActivity extends AppCompatActivity {
         if (signInAccount != null) {
             Toast.makeText(this, "Welcome " + signInAccount.getDisplayName(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     private void uploadSong() {
@@ -100,6 +108,7 @@ public class HomeActivity extends AppCompatActivity {
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child("Songs")
+                .child(user.getUid())
                 .child(uri.getLastPathSegment());
 
 //        binding.progressSeekBar.setVisibility(View.VISIBLE);
@@ -132,7 +141,7 @@ public class HomeActivity extends AppCompatActivity {
     private void uploadDetailsToFirebase() {
 
         SongDetails songDetails = new SongDetails(songName, songUrl);
-        FirebaseDatabase.getInstance().getReference("Songs").push().setValue(songDetails)
+        FirebaseDatabase.getInstance().getReference("Songs/" + user.getUid()).push().setValue(songDetails)
                 .addOnCompleteListener(task -> Toast.makeText(HomeActivity.this, "Song Uploaded", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(HomeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
 
     }
