@@ -5,6 +5,7 @@ import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 
 public class PlayerActivity extends AppCompatActivity {
 
+    private static final String TAG = "PlayerActivity";
     private String songName;
     private String songUrl;
     private int songPos;
@@ -39,6 +41,7 @@ public class PlayerActivity extends AppCompatActivity {
             songPos = getIntent().getIntExtra("song_pos", 0);
         }
         binding.songName.setText(songName);
+        Log.d(TAG, "onCreate: " + songUrl);
         Handler handler = new Handler();
 
         mediaPlayer = new MediaPlayer();

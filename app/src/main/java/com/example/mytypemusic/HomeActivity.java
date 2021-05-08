@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,6 +44,7 @@ import java.util.Objects;
 public class HomeActivity extends AppCompatActivity {
 
     private static final int RC_UPLOAD = 1;
+    private static final String TAG = "HomeActivity";
     private ActivityHomeBinding binding;
     private boolean checkPermission = false;
     private Uri uri;
@@ -116,6 +118,7 @@ public class HomeActivity extends AppCompatActivity {
         }).addOnFailureListener(e -> {
             binding.progressSeekBar.setProgress(0);
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "uploadToFirebaseStorage: " + e.getMessage());
 //            binding.progressSeekBar.setVisibility(View.GONE);
 
         }).addOnProgressListener(snapshot -> {
