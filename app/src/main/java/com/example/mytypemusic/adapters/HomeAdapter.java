@@ -2,12 +2,17 @@ package com.example.mytypemusic.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mytypemusic.PlayerActivity;
+import com.example.mytypemusic.R;
 import com.example.mytypemusic.databinding.HomeRowItemBinding;
 import com.example.mytypemusic.model.SongDetails;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -46,13 +51,42 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
         return new songViewHolder(HomeRowItemBinding.inflate(layoutInflater, parent, false));
     }
 
-    static class songViewHolder extends RecyclerView.ViewHolder {
+    static class songViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
         HomeRowItemBinding binding;
 
         public songViewHolder(@NonNull HomeRowItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            this.binding.menuPopupRow.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            showPopupMenu(v);
+        }
+
+        private void showPopupMenu(View view) {
+            PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+            popupMenu.inflate(R.menu.popup_menu);
+            popupMenu.setOnMenuItemClickListener(this);
+            popupMenu.show();
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    Toast.makeText(binding.getRoot().getContext(), "Will delete soon item no: " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    return true;
+
+                case R.id.action_fav:
+                    Toast.makeText(binding.getRoot().getContext(), "Will add to fav soon item no: " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    return true;
+
+                default:
+                    return false;
+            }
         }
     }
 
