@@ -53,7 +53,7 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
             v.getContext().startActivity(moveIntent);
         });
 
-        holder.getCurrentSong(model.getSongName());
+        holder.getCurrentSong(model.getSongName(), model.getSongUrl());
 
     }
 
@@ -70,6 +70,8 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
         HomeRowItemBinding binding;
         FirebaseUser user;
         String currentSong;
+        String currentSongUrl;
+        String currentDeletedSong = "";
 
         public songViewHolder(@NonNull HomeRowItemBinding binding) {
             super(binding.getRoot());
@@ -96,15 +98,43 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
                 case R.id.action_delete:
                     deleteFromDatabase(currentSong);
                     deleteFromStorage(currentSong);
+                    deleteFromLikedDb(currentSong);
                     return true;
 
                 case R.id.action_fav:
-                    Toast.makeText(binding.getRoot().getContext(), "Will add to fav soon item no: " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    uploadLikedSong(currentSong, currentSongUrl);
                     return true;
 
                 default:
                     return false;
             }
+        }
+
+        private void deleteFromLikedDb(String currentSong) {
+            Log.d(TAG, "deleteFromLikedDb: " + currentSongUrl);
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+            Query songQuery = reference.child("Favorites").child(user.getUid()).orderByChild("songName").equalTo(currentSong);
+            songQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot songSnapshot : snapshot.getChildren()) {
+                        songSnapshot.getRef().removeValue();
+                    }
+                    Toast.makeText(binding.getRoot().getContext(), "Song will be removed from favorites too", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d(TAG, "favorite onCancelled: " + error.getMessage());
+                }
+            });
+        }
+
+        private void uploadLikedSong(String currentSong, String currentSongUrl) {
+            SongDetails likedSongDetails = new SongDetails(currentSong, currentSongUrl);
+            FirebaseDatabase.getInstance().getReference("Favorites/" + user.getUid()).push().setValue(likedSongDetails)
+                    .addOnCompleteListener(task -> Toast.makeText(binding.getRoot().getContext(), "Uploaded to favorites", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(binding.getRoot().getContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
         }
 
         private void deleteFromStorage(String currentSong) {
@@ -115,7 +145,8 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
                     .child("raw:/storage/emulated/0/Download")
                     .child(currentSong);
 
-            storageReference.delete().addOnSuccessListener(unused -> Log.d(TAG, "delete from storage onSuccess: " + currentSong))
+            storageReference.delete()
+                    .addOnSuccessListener(unused -> Log.d(TAG, "delete from storage onSuccess: " + currentSong))
                     .addOnFailureListener(e -> Log.d(TAG, "Storage delete onFailure: " + e.getMessage()));
 
         }
@@ -126,7 +157,7 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
             songQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot songSnapshot: snapshot.getChildren()) {
+                    for (DataSnapshot songSnapshot : snapshot.getChildren()) {
                         songSnapshot.getRef().removeValue();
                     }
                     Toast.makeText(binding.getRoot().getContext(), "Song deleted", Toast.LENGTH_SHORT).show();
@@ -139,8 +170,9 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
             });
         }
 
-        public void getCurrentSong(String songName) {
+        public void getCurrentSong(String songName, String songUrl) {
             currentSong = songName;
+            currentSongUrl = songUrl;
         }
     }
 
