@@ -86,6 +86,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        validatePermission();
     }
 
     private void uploadSong() {
@@ -124,7 +125,7 @@ public class HomeActivity extends AppCompatActivity {
             Handler handler = new Handler();
             handler.postDelayed(() -> binding.progressSeekBar.setProgress(0), 1000);
             Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-            while (!uriTask.isComplete()) ;
+            while (!uriTask.isComplete());
             Uri urlSong = uriTask.getResult();
             assert urlSong != null;
             songUrl = urlSong.toString();
