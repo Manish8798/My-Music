@@ -149,7 +149,8 @@ public class HomeActivity extends AppCompatActivity {
 
         SongDetails songDetails = new SongDetails(songName, songUrl);
         FirebaseDatabase.getInstance().getReference("Songs/" + user.getUid()).push().setValue(songDetails)
-                .addOnCompleteListener(task -> Toast.makeText(HomeActivity.this, "Song Uploaded", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(HomeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnCompleteListener(task -> Toast.makeText(HomeActivity.this, "Song Uploaded", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(HomeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
 
     }
 

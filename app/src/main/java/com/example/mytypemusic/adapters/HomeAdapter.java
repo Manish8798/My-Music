@@ -1,6 +1,7 @@
 package com.example.mytypemusic.adapters;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,16 @@ import com.example.mytypemusic.databinding.HomeRowItemBinding;
 import com.example.mytypemusic.model.SongDetails;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapter.songViewHolder> {
 
@@ -42,6 +53,8 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
             v.getContext().startActivity(moveIntent);
         });
 
+        holder.getCurrentSong(model.getSongName());
+
     }
 
     @NonNull
@@ -53,12 +66,16 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
 
     static class songViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
+        private static final String TAG = "HomeAdapter";
         HomeRowItemBinding binding;
+        FirebaseUser user;
+        String currentSong;
 
         public songViewHolder(@NonNull HomeRowItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             this.binding.menuPopupRow.setOnClickListener(this);
+            user = FirebaseAuth.getInstance().getCurrentUser();
         }
 
         @Override
@@ -77,7 +94,8 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.action_delete:
-                    Toast.makeText(binding.getRoot().getContext(), "Will delete soon item no: " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    deleteFromDatabase(currentSong);
+                    deleteFromStorage(currentSong);
                     return true;
 
                 case R.id.action_fav:
@@ -87,6 +105,42 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
                 default:
                     return false;
             }
+        }
+
+        private void deleteFromStorage(String currentSong) {
+
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                    .child("Songs")
+                    .child(user.getUid())
+                    .child("raw:/storage/emulated/0/Download")
+                    .child(currentSong);
+
+            storageReference.delete().addOnSuccessListener(unused -> Log.d(TAG, "delete from storage onSuccess: " + currentSong))
+                    .addOnFailureListener(e -> Log.d(TAG, "Storage delete onFailure: " + e.getMessage()));
+
+        }
+
+        private void deleteFromDatabase(String currentSong) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+            Query songQuery = reference.child("Songs").child(user.getUid()).orderByChild("songName").equalTo(currentSong);
+            songQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot songSnapshot: snapshot.getChildren()) {
+                        songSnapshot.getRef().removeValue();
+                    }
+                    Toast.makeText(binding.getRoot().getContext(), "Song deleted", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d(TAG, "onCancelled: " + error.getMessage());
+                }
+            });
+        }
+
+        public void getCurrentSong(String songName) {
+            currentSong = songName;
         }
     }
 
