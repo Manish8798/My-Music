@@ -110,6 +110,13 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
             }
         }
 
+        private void uploadLikedSong(String currentSong, String currentSongUrl) {
+            SongDetails likedSongDetails = new SongDetails(currentSong, currentSongUrl);
+            FirebaseDatabase.getInstance().getReference("Favorites/" + user.getUid()).push().setValue(likedSongDetails)
+                    .addOnCompleteListener(task -> Toast.makeText(binding.getRoot().getContext(), "Added to favorites", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(binding.getRoot().getContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
+        }
+
         private void deleteFromLikedDb(String currentSong) {
             Log.d(TAG, "deleteFromLikedDb: " + currentSongUrl);
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -120,7 +127,7 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
                     for (DataSnapshot songSnapshot : snapshot.getChildren()) {
                         songSnapshot.getRef().removeValue();
                     }
-                    Toast.makeText(binding.getRoot().getContext(), "Song will be removed from favorites too", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onDataChange: Song will be removed from favorites too");
                 }
 
                 @Override
@@ -128,13 +135,6 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<SongDetails, HomeAdapte
                     Log.d(TAG, "favorite onCancelled: " + error.getMessage());
                 }
             });
-        }
-
-        private void uploadLikedSong(String currentSong, String currentSongUrl) {
-            SongDetails likedSongDetails = new SongDetails(currentSong, currentSongUrl);
-            FirebaseDatabase.getInstance().getReference("Favorites/" + user.getUid()).push().setValue(likedSongDetails)
-                    .addOnCompleteListener(task -> Toast.makeText(binding.getRoot().getContext(), "Uploaded to favorites", Toast.LENGTH_SHORT).show())
-                    .addOnFailureListener(e -> Toast.makeText(binding.getRoot().getContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
         }
 
         private void deleteFromStorage(String currentSong) {
