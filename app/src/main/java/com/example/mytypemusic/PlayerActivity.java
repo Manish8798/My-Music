@@ -161,7 +161,6 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        clearMediaPlayer();
         return true;
     }
 
