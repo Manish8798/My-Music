@@ -56,6 +56,7 @@ public class HomeActivity extends AppCompatActivity {
     final Fragment favFragment = new FavoritesFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment activeFragment = homeFragment;
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.bottomNav.setBackground(null);
         binding.bottomNav.getMenu().getItem(1).setEnabled(false);
         binding.progressSeekBar.setVisibility(View.VISIBLE);
+        handler = new Handler();
 
         binding.fab.setOnClickListener(v -> {
             if (validatePermission()) {
@@ -157,13 +159,17 @@ public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
         switch (item.getItemId()) {
             case R.id.home:
-                fm.beginTransaction().hide(activeFragment).show(homeFragment).commit();
-                activeFragment = homeFragment;
+                handler.post(() -> {
+                    fm.beginTransaction().hide(activeFragment).show(homeFragment).commit();
+                    activeFragment = homeFragment;
+                });
                 return true;
 
             case R.id.favorite:
-                fm.beginTransaction().hide(activeFragment).show(favFragment).commit();
-                activeFragment = favFragment;
+                handler.post(() -> {
+                    fm.beginTransaction().hide(activeFragment).show(favFragment).commit();
+                    activeFragment = favFragment;
+                });
                 return true;
         }
         return false;

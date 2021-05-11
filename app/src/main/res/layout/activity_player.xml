@@ -29,7 +29,7 @@
         android:textAllCaps="false"
         android:textColor="@color/dark_white"
         android:textSize="16sp"
-        android:textStyle="normal"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/guideline4">
 
     </TextView>
@@ -37,7 +37,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_margin="16dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/song_name">
@@ -45,23 +44,48 @@
         <SeekBar
             android:id="@+id/seekbar_player"
             android:layout_width="match_parent"
-            android:layout_height="32dp">
+            android:layout_height="wrap_content"
+            android:secondaryProgressTint="@color/dark_white">
 
         </SeekBar>
 
-        <TextView
-            android:id="@+id/seekBarHint"
-            android:textSize="12sp"
-            android:text="time"
-            android:visibility="gone"
-            android:textColor="@color/white"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        </TextView>
+            <TextView
+                android:id="@+id/seekBarStartTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:padding="2dp"
+                android:text="00:00"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/seekBarEndTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:padding="2dp"
+                android:text="_:_"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"

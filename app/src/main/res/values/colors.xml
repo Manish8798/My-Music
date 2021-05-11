@@ -13,5 +13,6 @@
     <color name="smoky_black">#100C08</color>
     <color name="dim_gray">#6A6A6A</color>
     <color name="lite_gray"> #C0C0C0</color>
+    <color name="red">#E50914</color>
 
 </resources>
