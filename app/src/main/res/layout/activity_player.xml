@@ -11,9 +11,10 @@
         android:id="@+id/playBtn"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout">
 
     </ImageView>
 
@@ -21,20 +22,21 @@
         android:id="@+id/song_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16sp"
-        android:layout_marginEnd="16sp"
+        android:layout_margin="16sp"
+        android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
-        android:text="......"
         android:textAllCaps="false"
         android:textColor="@color/dark_white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/guideline4">
+        app:layout_constraintTop_toBottomOf="@+id/guideline4"
+        tools:text="Song Name">
 
     </TextView>
 
     <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -60,9 +62,9 @@
                 android:layout_marginStart="8dp"
                 android:padding="2dp"
                 android:text="00:00"
-                android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="12sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -75,9 +77,9 @@
                 android:layout_marginEnd="8dp"
                 android:padding="2dp"
                 android:text="_:_"
-                android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="12sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
